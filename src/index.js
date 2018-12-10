@@ -116,7 +116,6 @@ module.exports = function solveSudoku(matrix) {
             return item === first || item === second
           }
 
-
           //проверка ряда
           let rowCounter = 1;
           let rowCoordinate = 0;
@@ -138,18 +137,30 @@ module.exports = function solveSudoku(matrix) {
               }
             }
           }
-          /*
-          //проверка колонки
+          
+
+          
+          let columnCounter = 1;
+          let columnCoordinate = 0;
           for(let secRow = 0; secRow < 9; secRow++){
-            if(typeof(result[secRow][column]) === 'object' && secRow != row){
-              if(result[secRow][column].indexOf(candidate) != -1){break}
+            if(result[secRow][column].length === 2 && result[secRow][column].every(arrayCheck)&&secRow!=row){
+              columnCounter++;              
+              if(columnCounter > 2){break}
+              columnCoordinate = secRow;
             }
-            if(secRow === 8){
-              result[row][column] = candidate;
-              return fillEmpty()
+            if(secRow === 8 && columnCounter === 2){
+              for(let i = 0; i < 9; i++){
+                if(i != row && i != columnCoordinate && typeof(result[i][column]) === 'object'){
+                  let j = result[i][column].indexOf(first);
+                  if(j!=-1){result[i][column].splice(j,1)}
+
+                  let k = result[i][column].indexOf(second);                  
+                  if(k!=-1){result[i][column].splice(k,1)}
+                }
+              }
             }
           }
-
+          /*
           //проверка ячейки
           let startRow = 0;
           if(row >= 0 && row <= 2){startRow = 0}
@@ -197,6 +208,19 @@ solveSudoku( [
   [9,5,7,0,0,8,3,0,0],
   [0,0,3,9,0,0,4,0,0],
   [2,4,0,0,3,0,7,0,9]
+  ])
+
+
+  solveSudoku( [
+    [4, 0, 0, 3, 5, 6, 9, 0, 2],
+    [0, 3, 9, 7, 2, 0, 5, 0, 4],
+    [0, 2, 5, 0, 9, 4, 7, 3, 0],
+    [0, 0, 3, 6, 0, 7, 0, 9, 0],
+    [0, 9, 0, 0, 0, 0, 0, 0, 3],
+    [0, 4, 0, 9, 1, 3, 8, 0, 0],
+    [9, 1, 2, 0, 6, 0, 3, 4, 7],
+    [3, 0, 4, 0, 7, 9, 0, 0, 0],
+    [8, 0, 0, 4, 3, 0, 0, 0, 9]
   ])
 
   */
