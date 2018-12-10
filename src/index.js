@@ -139,7 +139,7 @@ module.exports = function solveSudoku(matrix) {
           }
           
 
-          
+          //проверка колонки
           let columnCounter = 1;
           let columnCoordinate = 0;
           for(let secRow = 0; secRow < 9; secRow++){
@@ -160,8 +160,12 @@ module.exports = function solveSudoku(matrix) {
               }
             }
           }
-          /*
+          
           //проверка ячейки
+          let cellCounter = 1;
+          let cellRowCoordinate = 0;
+          let cellColumnCoordinate = 0;
+
           let startRow = 0;
           if(row >= 0 && row <= 2){startRow = 0}
           if(row >= 3 && row <= 5){startRow = 3}
@@ -174,15 +178,27 @@ module.exports = function solveSudoku(matrix) {
 
           for(let i = startRow;i <= startRow + 2; i++){
             for(let j =startColumn; j <= startColumn + 2; j++){
-              if(typeof(result[i][j]) === 'object' && !(i === row && j === column)){
-                if(result[i][j].indexOf(candidate) != -1){return result}                  
+              if(result[i][j].length === 2 && result[i][j].every(arrayCheck)&& !(i===row && j===column)){
+                cellCounter++
+                if(cellCounter > 2){i = 10}// скип верхнего цикла
+                cellRowCoordinate = i;
+                cellColumnCoordinate = j;
               }
-              if(i === startRow +2 && j === startColumn + 2){
-                result[row][column] = candidate;
-                return fillEmpty()
+              if(i === startRow + 2 && j === startColumn + 2 && cellCounter === 2){
+                for(let k = startRow; k <= startRow+2; k++){
+                  for(let n=startColumn; n <= startColumn+2; n++){
+                    if( !(k === row && n===column) && !(k === cellRowCoordinate && n ===cellColumnCoordinate)&&typeof(result[k][n])==='object'){
+                      let q = result[k][n].indexOf(first);
+                      if(q!=-1){result[k][n].splice(q,1)}
+
+                      q = result[k][n].indexOf(second);
+                      if(q!=-1){result[k][n].splice(q,1)}
+                    }
+                  }
+                }
               }
             }
-          }*/
+          }
         }
       }
     } 
